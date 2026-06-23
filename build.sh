@@ -4,10 +4,10 @@ set -euo pipefail
 # Fedora release to build against. Match this to a current stable release.
 RELEASEVER="${1:-44}"
 RESULTDIR="/var/lmc"
-VOLID="SkinTrackOS-${RELEASEVER}"
+VOLID="AvalancheOS-${RELEASEVER}"
 KS="fedora-live-kde.ks"
 
-echo "==> Building Skin Track OS (Fedora ${RELEASEVER} base)"
+echo "==> Building Avalanche OS (Fedora ${RELEASEVER} base)"
 echo "    Kickstart : ${KS}"
 echo "    Output    : ${RESULTDIR}"
 echo ""
@@ -24,7 +24,7 @@ sudo livemedia-creator \
   --ks "${KS}" \
   --no-virt \
   --resultdir "${RESULTDIR}" \
-  --project "Skin Track OS" \
+  --project "Avalanche OS" \
   --make-iso \
   --volid "${VOLID}" \
   --iso-only \

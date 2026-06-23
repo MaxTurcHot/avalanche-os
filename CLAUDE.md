@@ -1,4 +1,4 @@
-# Skin Track OS — Project Context
+# Avalanche OS — Project Context
 
 ## What this is
 
@@ -7,10 +7,7 @@ and no required deliverable. The point of the project is the build process
 itself — learning kickstart files, Lorax/livemedia-creator, and KDE
 customization — as much as the final ISO.
 
-**"Skin Track OS"** is a working name — open to changing it, but it's the
-placeholder used throughout this repo until something better sticks.
-("Skin track" = the uphill route laid with climbing skins when splitboard
-touring. Double meaning with "skin" as in distro skin/theme.)
+**"Avalanche OS"** is the project name.
 
 ## Theme & identity
 
@@ -95,7 +92,6 @@ will — that's normal and expected, not a sign something's wrong).
 
 ## Open questions / not yet decided
 
-- Final project name (currently "Skin Track OS" as placeholder).
 - Exact wallpaper/icon set and Plasma color scheme.
 - Whether to build the Massif du Sud snow-report widget, and what data
   source it would use (Maxime has an existing snowboarding/powder website —
