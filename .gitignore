@@ -1,0 +1,11 @@
+# Build outputs
+*.iso
+/var/lmc/
+
+# Screenshots and images
+*.png
+*.jpg
+*.jpeg
+
+# Local Claude Code settings
+.claude/
