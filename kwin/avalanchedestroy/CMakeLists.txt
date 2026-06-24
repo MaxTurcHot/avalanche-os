@@ -11,7 +11,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
-find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(KF6 REQUIRED COMPONENTS Config)
 find_package(KWin REQUIRED)
 
