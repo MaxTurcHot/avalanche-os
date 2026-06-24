@@ -11,7 +11,7 @@
 %include fedora-live-minimization.ks
 
 # DVD payload
-part / --size=9000
+part / --size=15000
 
 %post
 %end

@@ -2,10 +2,12 @@
 *.iso
 /var/lmc/
 
-# Screenshots and images
-*.png
-*.jpg
-*.jpeg
+# livemedia-creator / anaconda build artifacts
+anaconda/
+*.log
+
+# Generated kickstart fragment (rebuilt from assets by build.sh on every build)
+avalanche-bootsplash.ks
 
 # Local Claude Code settings
 .claude/

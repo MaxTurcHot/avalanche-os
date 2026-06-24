@@ -90,6 +90,23 @@ will — that's normal and expected, not a sign something's wrong).
   cares about coherent design systems (see prior FEA:MM SVG/icon/logo work).
 - No fixed scope or deadline. It's fine to keep iterating indefinitely.
 
+### Teach as you go (important)
+
+Maxime is learning how to build a Linux distribution through this project — the
+learning is a primary goal, not a side effect. So **explain the work like a
+teacher explaining to a student**:
+
+- Before (or while) running a command or editing a file, say *what* it does and
+  *why* we're doing it this way — in plain language, not jargon dumps.
+- When a new concept comes up (kickstart directive, `dracut`, Plymouth,
+  initramfs, squashfs, `%post`, etc.), give a short, concrete explanation of
+  what it is and how it fits the bigger picture before moving on.
+- Mention alternatives we *didn't* take and why, when it aids understanding.
+- When something breaks, walk through the diagnosis out loud — the debugging
+  reasoning is itself a lesson.
+- Favour understanding over speed. A working result the user doesn't understand
+  is a worse outcome here than a slower one they do.
+
 ## Open questions / not yet decided
 
 - Exact wallpaper/icon set and Plasma color scheme.

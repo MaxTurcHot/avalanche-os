@@ -1,0 +1,62 @@
+# Avalanche OS Plymouth theme
+# Three pre-rendered frames (boot-1/2/3) show the peaks lighting up one at a
+# time. Frames are cycled on a timer so the animation is always visible
+# regardless of how boot progress is reported.
+#
+# Background is Crevasse (#07121E) — matches the frames' own background so any
+# letterboxing on non-16:9 screens blends seamlessly.
+
+Window.SetBackgroundTopColor    (0.027, 0.071, 0.118);
+Window.SetBackgroundBottomColor (0.027, 0.071, 0.118);
+
+sw = Window.GetWidth ();
+sh = Window.GetHeight ();
+
+# All three frames share the same dimensions; scale to fit, never upscale.
+img1 = Image ("boot-1.png");
+iw   = img1.GetWidth ();
+ih   = img1.GetHeight ();
+
+scale = sw / iw;
+sy    = sh / ih;
+if (sy < scale) { scale = sy; }
+if (scale > 1)  { scale = 1; }
+
+dw = Math.Int (iw * scale);
+dh = Math.Int (ih * scale);
+px = Math.Int ((sw - dw) / 2);
+py = Math.Int ((sh - dh) / 2);
+
+s1 = Sprite (img1.Scale (dw, dh));
+s1.SetX (px); s1.SetY (py); s1.SetOpacity (1);
+
+img2 = Image ("boot-2.png");
+s2 = Sprite (img2.Scale (dw, dh));
+s2.SetX (px); s2.SetY (py); s2.SetOpacity (0);
+
+img3 = Image ("boot-3.png");
+s3 = Sprite (img3.Scale (dw, dh));
+s3.SetX (px); s3.SetY (py); s3.SetOpacity (0);
+
+cur = 1;
+fun show1 () { if (cur != 1) { s1.SetOpacity (1); s2.SetOpacity (0); s3.SetOpacity (0); cur = 1; } }
+fun show2 () { if (cur != 2) { s1.SetOpacity (0); s2.SetOpacity (1); s3.SetOpacity (0); cur = 2; } }
+fun show3 () { if (cur != 3) { s1.SetOpacity (0); s2.SetOpacity (0); s3.SetOpacity (1); cur = 3; } }
+
+# Refresh fires ~50x/sec. Advance one peak every ~0.6s, hold on the full
+# (orange-summit) frame a beat longer, then loop.
+tick = 0;
+fun refresh () {
+    tick++;
+    if (tick >= 120) { tick = 0; }
+    if (tick < 30) {
+        show1 ();
+    } else {
+        if (tick < 60) {
+            show2 ();
+        } else {
+            show3 ();
+        }
+    }
+}
+Plymouth.SetRefreshFunction (refresh);

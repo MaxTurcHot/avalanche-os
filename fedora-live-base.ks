@@ -18,7 +18,7 @@ clearpart --all
 part / --size 5120 --fstype ext4
 services --enabled=NetworkManager,ModemManager --disabled=sshd
 network --bootproto=dhcp --device=link --activate
-rootpw --lock --iscrypted locked
+rootpw --lock
 shutdown
 
 %include fedora-repo.ks

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 96" width="470" height="96" role="img" aria-label="Avalanche OS">
+  <title>Avalanche OS — horizontal lockup</title>
+  <defs>
+    
+  </defs>
+  <g transform="translate(0,8) scale(0.71)">
+    <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+    <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+    <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+  </g>
+  <text x="104" y="65" class="wm" font-weight="600" fill="#E7EEF3">Avalanche<tspan font-weight="400" fill="#6E8696"> OS</tspan></text>
+</svg>

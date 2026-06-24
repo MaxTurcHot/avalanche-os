@@ -3,7 +3,4 @@
 
 %packages
 
-# save some space
--hplip
-
 %end
