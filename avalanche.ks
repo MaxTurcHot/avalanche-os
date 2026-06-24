@@ -21,9 +21,14 @@
 # Plasma color scheme (deep blue / white / charcoal) set as the default.
 %include avalanche-colorscheme.ks
 
-# Generated fragment: logo icon + default wallpaper, base64-embedded + verified.
+# Generated fragment: logo icon + default wallpaper + Look-and-Feel global theme
+# and the /etc/xdg/kdedefaults cascade that makes it the system default.
 # Regenerate with: python3 scripts/gen-branding-ks.py
 %include avalanche-branding.ks
+
+# Live-session safety net: seed the liveuser's kdedefaults so the theme applies
+# on the live ISO too (must come after avalanche-branding.ks).
+%include avalanche-livesys.ks
 
 # ── Plymouth boot splash ──────────────────────────────────────────────────────
 # Generated fragment: theme files + the three boot frames, embedded and verified.

@@ -135,16 +135,15 @@ inactiveBlend=147,161,172
 inactiveForeground=147,161,172
 EOF
 
-# Seed the system-wide default. kdeglobals is read from /etc/xdg for every user
-# who doesn't have their own ~/.config/kdeglobals yet (i.e. fresh live session).
-# We copy the scheme and ensure [General] carries the ColorScheme key so Plasma
-# selects it by name on first login.
-awk '1; /^\[General\]$/ && !done {print "ColorScheme=AvalancheOS"; done=1}' \
-    "$SCHEME" > /etc/xdg/kdeglobals
-
-if grep -q '^ColorScheme=AvalancheOS' /etc/xdg/kdeglobals; then
-    echo "AVALANCHE: color scheme installed + set default (AvalancheOS)"
+# NOTE: this fragment only INSTALLS the scheme so the name "AvalancheOS"
+# resolves. SELECTING it as the default is done elsewhere, in
+# avalanche-branding.ks, via the Look-and-Feel package + the
+# /etc/xdg/kdedefaults/ cascade. (An earlier version wrote ColorScheme into
+# /etc/xdg/kdeglobals, but that layer is overridden by the active global theme —
+# which is why the live session showed stock Breeze. kdedefaults wins.)
+if [ -f "$SCHEME" ]; then
+    echo "AVALANCHE: color scheme file installed (AvalancheOS.colors)"
 else
-    echo "AVALANCHE ERROR: kdeglobals did not get ColorScheme=AvalancheOS"
+    echo "AVALANCHE ERROR: AvalancheOS.colors was not written"
 fi
 %end
