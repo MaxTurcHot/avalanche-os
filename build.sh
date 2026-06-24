@@ -26,6 +26,10 @@ fi
 python3 "${SCRIPT_DIR}/scripts/gen-bootsplash-ks.py"
 echo ""
 
+# Regenerate the branding fragment (logo icon + wallpaper) the same way.
+python3 "${SCRIPT_DIR}/scripts/gen-branding-ks.py"
+echo ""
+
 # livemedia-creator requires the results dir to not exist — it creates it itself.
 rm -rf "${RESULTDIR}"
 
