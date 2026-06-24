@@ -6,11 +6,42 @@
 @firefox
 @kde-apps
 @kde-media
-@kde-pim
-@libreoffice
-# add libreoffice-draw and libreoffice-math (pagureio:fedora-kde/SIG#103)
-libreoffice-draw
-libreoffice-math
+
+# ── Avalanche: dropped groups ─────────────────────────────────────────────────
+-@kde-pim
+-@libreoffice
+
+# ── Rescued from @kde-pim ─────────────────────────────────────────────────────
+kleopatra
+
+# ── Replaces LibreOffice ──────────────────────────────────────────────────────
+kate
+
+# ── @kde-apps exclusions ──────────────────────────────────────────────────────
+-keditbookmarks
+-kmahjongg
+-kmines
+-kmouth
+-kpat
+-neochat
+-qrca
+-skanpage
+
+# ── @kde-media exclusions ─────────────────────────────────────────────────────
+-digikam
+-dragon
+-elisa-player
+-k3b
+-kamera
+-kamoso
+-kolourpaint
+
+# ── Avalanche: added apps ─────────────────────────────────────────────────────
+btop
+mariadb
+mariadb-server
+nextcloud-client
+flatpak
 
 fedora-release-kde
 

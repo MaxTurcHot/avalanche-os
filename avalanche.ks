@@ -34,3 +34,6 @@
 # Generated fragment: theme files + the three boot frames, embedded and verified.
 # Regenerate with: python3 scripts/gen-bootsplash-ks.py
 %include avalanche-bootsplash.ks
+
+# ── Apps: Starship prompt, Flathub, firstboot Flatpak installer ───────────────
+%include avalanche-apps.ks
