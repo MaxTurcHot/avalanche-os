@@ -41,6 +41,18 @@ already made" below).
 **Build environment:** A VM (QEMU) is the intended build/test environment, to
 allow safe iteration and easy snapshotting/reverting when builds break.
 
+**Build workflow (laptop + VM split):** Editing + AI work happens on the
+**laptop** (the daily machine); the **VM is a disposable build box**. GitHub is
+the courier. Loop: edit/commit/**push from the laptop**, then on the VM run the
+one-liner `cd ~/avalanche-os && git pull && ./vm-rebuild.sh`. `vm-rebuild.sh`
+builds the ISO (`sudo ./build.sh`, ~40 min) and then serves `/var/lmc` over HTTP
+(`:8080`) so the laptop can `wget -c http://<vm-ip>:8080/boot.iso`. The build
+stays `--no-virt` because it runs inside the disposable VM — the rootful Anaconda
+installer (incl. `clearpart --all`) never runs on the laptop. (`--virt` would be
+the safe choice only if building directly on the laptop; we don't.) Reach the VM
+via `ssh turcmax@<vm-ip>` (enable once with `sudo systemctl enable --now sshd`)
+or the virt-manager console.
+
 ### Planned customization layers (in order)
 
 1. **Strip down** — `%packages` exclusions to remove cruft that sneaks into
