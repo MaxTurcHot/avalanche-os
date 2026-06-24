@@ -7,9 +7,22 @@
 @kde-apps
 @kde-media
 
-# ── Avalanche: dropped groups ─────────────────────────────────────────────────
--@kde-pim
--@libreoffice
+# ── @kde-pim exclusions (exclude individually — -@group syntax unsupported) ───
+# kleopatra kept intentionally
+-akregator
+-kaddressbook
+-kmail
+-kontact
+-korganizer
+
+# ── @libreoffice exclusions (exclude individually — -@group syntax unsupported)
+-libreoffice-calc
+-libreoffice-emailmerge
+-libreoffice-graphicfilter
+-libreoffice-impress
+-libreoffice-writer
+-libreoffice-draw
+-libreoffice-math
 
 # ── Rescued from @kde-pim ─────────────────────────────────────────────────────
 kleopatra
@@ -18,7 +31,7 @@ kleopatra
 kate
 
 # ── @kde-apps exclusions ──────────────────────────────────────────────────────
--keditbookmarks
+# keditbookmarks intentionally kept — konsole hard-depends on it
 -kmahjongg
 -kmines
 -kmouth
