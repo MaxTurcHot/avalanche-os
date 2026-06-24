@@ -1,0 +1,21 @@
+{
+    "KPackageStructure": "KWin/Effect",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "turcmax@avalanche-os.org",
+                "Name": "Avalanche OS Team"
+            }
+        ],
+        "Category": "Appearance",
+        "Description": "Animates closed windows by sweeping them away like an avalanche: sliding to the top-right, rotating, shrinking, and fading out.",
+        "EnabledByDefault": true,
+        "Id": "kwin4_effect_avalanchedestroy",
+        "License": "GPL-3.0-or-later",
+        "Name": "Avalanche Destroy",
+        "Version": "1.0"
+    },
+    "X-KDE-Ordering": 60,
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js"
+}

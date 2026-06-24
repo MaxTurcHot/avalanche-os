@@ -379,6 +379,20 @@ B64EOF
 gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
 echo "AVALANCHE: logo icon installed (avalanche-logo-icon)"
 
+# ── Start menu icon (Kickoff button — overrides start-here-fedora) ─────────
+mkdir -p "$(dirname "/usr/share/icons/hicolor/scalable/apps/start-here-fedora.svg")"
+cat > "/usr/share/icons/hicolor/scalable/apps/start-here-fedora.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
+echo "AVALANCHE: start-here-fedora icon replaced with Avalanche mark"
+
 # ── Wallpaper package (referenced by dir name 'AvalancheOS') ──────────────
 mkdir -p "$(dirname "/usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png")"
 # avalanche-wallpaper-dark-3840x2160-clean.png -> /usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png (143485 bytes)

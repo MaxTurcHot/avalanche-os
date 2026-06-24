@@ -96,6 +96,19 @@ def main():
     out.append('echo "AVALANCHE: logo icon installed (avalanche-logo-icon)"')
     out.append("")
 
+    # ── Start menu (Kickoff) icon: override start-here-fedora with the mark ──
+    out.append("# ── Start menu icon (Kickoff button — overrides start-here-fedora) ─────────")
+    heredoc(out, "/usr/share/icons/hicolor/scalable/apps/start-here-fedora.svg",
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">\n'
+            '  <title>Avalanche OS</title>\n'
+            '  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>\n'
+            '  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>\n'
+            '  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>\n'
+            '</svg>')
+    out.append("gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true")
+    out.append('echo "AVALANCHE: start-here-fedora icon replaced with Avalanche mark"')
+    out.append("")
+
     # ── Wallpaper: ship as a Plasma wallpaper package ─────────────────────────
     out.append("# ── Wallpaper package (referenced by dir name 'AvalancheOS') ──────────────")
     total += emit_png(out, WALLPAPER, f"{WP_PKG}/contents/images/3840x2160.png")

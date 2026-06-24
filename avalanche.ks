@@ -37,3 +37,6 @@
 
 # ── Apps: Starship prompt, Flathub, firstboot Flatpak installer ───────────────
 %include avalanche-apps.ks
+
+# ── KWin effects: AvalancheDestroy window close animation ────────────────────
+%include avalanche-effects.ks
