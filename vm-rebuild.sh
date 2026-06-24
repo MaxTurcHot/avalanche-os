@@ -21,8 +21,9 @@ RESULTDIR="/var/lmc"
 
 echo "==> HEAD is $(git rev-parse --short HEAD): $(git log -1 --pretty=%s)"
 
-# Clear any stale anaconda PID files left by previous failed builds.
+# Clear stale state left by previous failed builds.
 sudo rm -f /run/anaconda.pid /run/user/0/anaconda.pid /run/user/"$(id -u)"/anaconda.pid
+sudo rm -rf /var/tmp/dnf.package.cache
 
 echo "==> Building Avalanche OS (this takes ~40 min)…"
 sudo ./build.sh
