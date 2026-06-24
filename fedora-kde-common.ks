@@ -52,7 +52,6 @@ kate
 # ── Avalanche: added apps ─────────────────────────────────────────────────────
 btop
 mariadb
-mariadb-server
 nextcloud-client
 flatpak
 
