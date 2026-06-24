@@ -27,7 +27,8 @@ sudo rm -rf /var/tmp/dnf.package.cache
 
 echo "==> Building AvalancheDestroy KWin effect…"
 sudo dnf install -y cmake ninja-build kwin-devel extra-cmake-modules \
-    qt6-qtbase-devel kf6-kconfigwidgets-devel kf6-kconfig-devel 2>&1 | tail -3
+    qt6-qtbase-devel kf6-kconfigwidgets-devel kf6-kconfig-devel \
+    libepoxy-devel libdrm-devel 2>&1 | tail -3
 EFFECT_DIR="$SCRIPT_DIR/kwin/avalanchedestroy"
 BUILD_DIR="$EFFECT_DIR/build"
 rm -rf "$BUILD_DIR" && mkdir -p "$BUILD_DIR"

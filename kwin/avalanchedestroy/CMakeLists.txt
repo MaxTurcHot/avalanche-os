@@ -15,24 +15,35 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(KF6 REQUIRED COMPONENTS Config)
 find_package(KWin REQUIRED)
 
-include(KWinEffectsMacros)
+kconfig_add_kcfg_files(CONFIG_SRCS avalanchedestroyconfig.kcfgc)
 
-kconfig_add_kcfg_files(SOURCES avalanchedestroyconfig.kcfgc)
-
-list(APPEND SOURCES
+set(EFFECT_SRCS
     avalanchedestroy.cpp
     main.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/avalanchedestroyconfig.cpp
+    ${CONFIG_SRCS}
 )
 
-kwin_add_effect_with_config(avalanchedestroy ${SOURCES})
+add_library(kwin_effect_avalanchedestroy MODULE ${EFFECT_SRCS})
 
-target_include_directories(avalanchedestroy PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties(kwin_effect_avalanchedestroy PROPERTIES
+    PREFIX ""
+    AUTOMOC ON
+    AUTOUIC ON
+)
 
-target_link_libraries(avalanchedestroy PRIVATE
+target_include_directories(kwin_effect_avalanchedestroy PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_link_libraries(kwin_effect_avalanchedestroy PRIVATE
     KWin::kwin
     KF6::ConfigGui
+    Qt6::Core
 )
+
+install(TARGETS kwin_effect_avalanchedestroy
+    DESTINATION ${KDE_INSTALL_PLUGINDIR}/kwin/effects)
 
 install(FILES metadata.json
     DESTINATION ${KDE_INSTALL_DATADIR}/kwin/effects/avalanchedestroy)
