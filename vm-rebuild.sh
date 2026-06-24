@@ -25,6 +25,16 @@ echo "==> HEAD is $(git rev-parse --short HEAD): $(git log -1 --pretty=%s)"
 sudo rm -f /run/anaconda.pid /run/user/0/anaconda.pid /run/user/"$(id -u)"/anaconda.pid
 sudo rm -rf /var/tmp/dnf.package.cache
 
+echo "==> Building AvalancheDestroy KWin effect…"
+sudo dnf install -y cmake ninja-build kwin-devel extra-cmake-modules \
+    qt6-qtbase-devel kf6-kconfigwidgets-devel kf6-kconfig-devel 2>&1 | tail -3
+EFFECT_DIR="$SCRIPT_DIR/kwin/avalanchedestroy"
+BUILD_DIR="$EFFECT_DIR/build"
+rm -rf "$BUILD_DIR" && mkdir -p "$BUILD_DIR"
+(cd "$BUILD_DIR" && cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr 2>&1 | tail -5 && ninja 2>&1)
+python3 "$SCRIPT_DIR/scripts/gen-effects-ks.py"
+echo "==> AvalancheDestroy built and embedded into avalanche-effects.ks"
+
 echo "==> Building Avalanche OS (this takes ~40 min)…"
 sudo ./build.sh
 
