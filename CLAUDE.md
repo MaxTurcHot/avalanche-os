@@ -43,15 +43,20 @@ allow safe iteration and easy snapshotting/reverting when builds break.
 
 **Build workflow (laptop + VM split):** Editing + AI work happens on the
 **laptop** (the daily machine); the **VM is a disposable build box**. GitHub is
-the courier. Loop: edit/commit/**push from the laptop**, then on the VM run the
-one-liner `cd ~/avalanche-os && git pull && ./vm-rebuild.sh`. `vm-rebuild.sh`
-builds the ISO (`sudo ./build.sh`, ~40 min) and then serves `/var/lmc` over HTTP
-(`:8080`) so the laptop can `wget -c http://<vm-ip>:8080/boot.iso`. The build
-stays `--no-virt` because it runs inside the disposable VM — the rootful Anaconda
-installer (incl. `clearpart --all`) never runs on the laptop. (`--virt` would be
-the safe choice only if building directly on the laptop; we don't.) Reach the VM
-via `ssh turcmax@<vm-ip>` (enable once with `sudo systemctl enable --now sshd`)
-or the virt-manager console.
+the courier. Loop: edit/commit/**push from the laptop**, then SSH into the VM
+and run the one-liner:
+
+```
+ssh turcmax@192.168.122.79
+cd ~/avalanche-os && git pull && ./vm-rebuild.sh
+```
+
+`vm-rebuild.sh` builds the ISO (`sudo ./build.sh`, ~40 min) and then serves
+`/var/lmc` over HTTP (`:8080`) so the laptop can
+`wget -c http://192.168.122.79:8080/boot.iso`. The build stays `--no-virt`
+because it runs inside the disposable VM — the rootful Anaconda installer
+(incl. `clearpart --all`) never runs on the laptop. (`--virt` would be the
+safe choice only if building directly on the laptop; we don't.)
 
 ### Planned customization layers (in order)
 
@@ -90,6 +95,14 @@ will — that's normal and expected, not a sign something's wrong).
   and explicitly set aside in favor of the personal/hobby theme. FEA:MM may
   still get pinned/installed as a practical nicety, but it isn't the spin's
   identity.
+
+## AI tooling
+
+**Prefer Google Antigravity (`agy`) for delegatable sub-tasks** to keep Claude
+token usage low. Good candidates: file search/grep, summarising build logs,
+drafting boilerplate, one-off scripting tasks. Claude handles architecture
+decisions, complex edits, and anything that needs full project context.
+`agy` is installed at `/home/turcmax/.local/bin/agy` (v1.0.11).
 
 ## Working style / what good help looks like here
 
