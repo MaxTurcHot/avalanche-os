@@ -200,10 +200,35 @@ theme=Breeze""")
     out.append('echo "AVALANCHE: kdedefaults cascade set (LookAndFeelPackage + ColorScheme)"')
     out.append("")
 
-    # ── Lockscreen wallpaper (unchanged — this layer was never the failure) ───
+    # ── Lockscreen wallpaper ──────────────────────────────────────────────────
     out.append("# ── Lockscreen wallpaper (system-wide default via /etc/xdg) ───────────────")
     heredoc(out, "/etc/xdg/kscreenlockerrc", f"""[Greeter][Wallpaper][org.kde.image][General]
 Image=file://{WP_PKG}/""")
+
+    # ── First-login autostart: apply the Look-and-Feel for installed users ────
+    # kdedefaults covers colors/icons/decoration but NOT the Plasma wallpaper
+    # (which lives in plasma-org.kde.plasma.desktop-appletsrc, a runtime file
+    # that is never seeded for newly created users). Running
+    # plasma-apply-lookandfeel at first login is the official KDE way to push
+    # the full theme — wallpaper included — to a brand-new user account.
+    # The .desktop uses X-KDE-autostart-condition so it self-disables after one run.
+    out.append("# ── First-login autostart (apply LnF for installed users) ────────────────")
+    heredoc(out, "/etc/xdg/autostart/avalanche-firstlogin.desktop", """\
+[Desktop Entry]
+Name=Avalanche OS First Login Setup
+Exec=/usr/local/bin/avalanche-firstlogin
+Type=Application
+X-KDE-autostart-condition=avalanche-firstloginrc:General:done:false""")
+    out.append("cat > /usr/local/bin/avalanche-firstlogin << 'EOF'")
+    out.append("#!/bin/bash")
+    out.append("# Runs once on first Plasma login for each user.")
+    out.append("# Applies the Avalanche OS Look-and-Feel (wallpaper, colors, icons, deco).")
+    out.append("plasma-apply-lookandfeel --apply org.avalanche.desktop")
+    out.append("kwriteconfig6 --file avalanche-firstloginrc --group General --key done true")
+    out.append("EOF")
+    out.append("chmod +x /usr/local/bin/avalanche-firstlogin")
+    out.append('echo "AVALANCHE: first-login autostart installed"')
+    out.append("")
 
     # ── Verify the embedded binary + the key default files in the build log ───
     out.append(f'if file "{WP_PKG}/contents/images/3840x2160.png" | grep -q "PNG image data"; then')

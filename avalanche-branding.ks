@@ -3158,6 +3158,26 @@ cat > "/etc/xdg/kscreenlockerrc" << 'TXTEOF'
 Image=file:///usr/share/wallpapers/AvalancheOS/
 TXTEOF
 
+# ── First-login autostart (apply LnF for installed users) ────────────────
+mkdir -p "$(dirname "/etc/xdg/autostart/avalanche-firstlogin.desktop")"
+cat > "/etc/xdg/autostart/avalanche-firstlogin.desktop" << 'TXTEOF'
+[Desktop Entry]
+Name=Avalanche OS First Login Setup
+Exec=/usr/local/bin/avalanche-firstlogin
+Type=Application
+X-KDE-autostart-condition=avalanche-firstloginrc:General:done:false
+TXTEOF
+
+cat > /usr/local/bin/avalanche-firstlogin << 'EOF'
+#!/bin/bash
+# Runs once on first Plasma login for each user.
+# Applies the Avalanche OS Look-and-Feel (wallpaper, colors, icons, deco).
+plasma-apply-lookandfeel --apply org.avalanche.desktop
+kwriteconfig6 --file avalanche-firstloginrc --group General --key done true
+EOF
+chmod +x /usr/local/bin/avalanche-firstlogin
+echo "AVALANCHE: first-login autostart installed"
+
 if file "/usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png" | grep -q "PNG image data"; then
     echo "AVALANCHE: wallpaper OK ($(wc -c < "/usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png") bytes)"
 else
