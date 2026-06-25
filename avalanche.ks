@@ -35,14 +35,13 @@
 # Regenerate with: python3 scripts/gen-bootsplash-ks.py
 %include avalanche-bootsplash.ks
 
-# ── Apps: Starship, RPM Fusion, Steam, VS Code, DBeaver, codecs ──────────────
+# ── Apps: Starship, RPM Fusion, Steam, VS Code, DBeaver, codecs, Firefox bookmarks
 %include avalanche-apps.ks
 
 # ── Snow Watch Plasma widget (wheretosnow API) ────────────────────────────────
 %include avalanche-widget.ks
 
-# ── KWin effects: Fall Apart close animation (20px blocks, powder-snow feel) ─
-# Custom C++ AvalancheDestroy effect is in kwin/ — see DEVPLAN.md.
-# Requires rebuilding kwin itself (all effects are built-in, not plugins in KWin 6).
-# Using built-in Fall Apart in the meantime.
+# ── KWin effects (no-op — stock KDE defaults) ────────────────────────────────
+# Custom AvalancheDestroy C++ effect is in kwin/ — see DEVPLAN.md.
+# Requires rebuilding kwin itself (KWin 6 compiles all effects into binary).
 %include avalanche-effects.ks

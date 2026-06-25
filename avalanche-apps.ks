@@ -75,4 +75,34 @@ dnf install -y code
 # ── DBeaver Community (direct RPM — their custom repo URL changed) ────────────
 dnf install -y https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm
 
+# ── Firefox bookmarks (enterprise policies — applied on first launch) ──────────
+# Placement "toolbar" puts them on the bookmarks toolbar, visible by default.
+# "Bookmarks" (not "ManagedBookmarks") lets the user edit/remove them.
+mkdir -p /etc/firefox/policies
+cat > /etc/firefox/policies/policies.json << 'EOF'
+{
+  "policies": {
+    "Bookmarks": [
+      {
+        "Title": "Snow Conditions — Where to Snow",
+        "URL": "https://turcserv.duckdns.org/wheretosnow/",
+        "Placement": "toolbar"
+      },
+      {
+        "Title": "Massif du Sud",
+        "URL": "https://www.lemassif.com/",
+        "Placement": "toolbar"
+      },
+      {
+        "Title": "Avalanche Canada",
+        "URL": "https://www.avalanche.ca/",
+        "Placement": "toolbar"
+      }
+    ]
+  }
+}
+EOF
+
+echo "AVALANCHE: Firefox bookmarks installed via policies.json"
+
 %end
