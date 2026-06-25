@@ -38,5 +38,8 @@
 # ── Apps: Starship prompt, Flathub, firstboot Flatpak installer ───────────────
 %include avalanche-apps.ks
 
-# ── KWin effects: AvalancheDestroy window close animation ────────────────────
+# ── KWin effects: Fall Apart close animation (20px blocks, powder-snow feel) ─
+# Custom C++ AvalancheDestroy effect is in kwin/ — see DEVPLAN.md.
+# Requires rebuilding kwin itself (all effects are built-in, not plugins in KWin 6).
+# Using built-in Fall Apart in the meantime.
 %include avalanche-effects.ks

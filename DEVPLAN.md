@@ -54,3 +54,37 @@ layer — separate from the visual branding (wallpaper, colors, splash).
 
 Idea only — not started. Fits the "configure"/"brand" layers, after the current
 identity + branding pass is verified on a real boot.
+
+---
+
+## Standalone project: AvalancheDestroy KWin effect
+
+Custom window close animation: tiles cascade downward with avalanche physics
+(upper tiles carry more kinetic energy, front widens laterally, 600ms, 20px blocks).
+
+### What was built
+
+Source lives in `kwin/avalanchedestroy/` — a full C++ KWin effect derived from
+Fall Apart (GPL-2.0-or-later). Physics are implemented and the code compiles
+cleanly against kwin-devel 6.7.0 (`cmake + ninja` on the VM).
+
+### The blocker
+
+KWin 6 compiles all effects directly into the kwin binary via
+`kwin_add_builtin_effect`. There is no runtime plugin path for compiled effects —
+`/usr/lib64/qt6/plugins/kwin/effects/` only contains config UI plugins (.so),
+not effect code. Shipping a custom compiled effect requires either:
+
+- Rebuilding kwin itself with the effect patched in, or
+- Maintaining a custom kwin RPM (fork + package + update forever)
+
+### Next steps (when prioritized)
+
+1. Fork the kwin SRPM, add `kwin/avalanchedestroy/` as a new builtin plugin,
+   patch `src/plugins/CMakeLists.txt` to include it.
+2. Build a custom `kwin` RPM on the VM.
+3. Host it in a custom Copr repo or embed the RPM in the kickstart.
+4. Wire `gen-effects-ks.py` to embed the RPM instead of a .so.
+
+**In the meantime:** Fall Apart with 20px blocks is enabled as a reasonable
+placeholder (same tile-fall concept, already built into kwin).
