@@ -27,6 +27,10 @@ git -C "$(dirname "${BASH_SOURCE[0]}")" reset --hard HEAD 2>/dev/null || true
 # Clear stale state left by previous failed builds.
 sudo rm -f /run/anaconda.pid /run/user/0/anaconda.pid /run/user/"$(id -u)"/anaconda.pid
 sudo rm -rf /var/tmp/dnf.package.cache
+# Force-unmount any sysimage left over from a previous failed transaction.
+sudo umount -l /mnt/sysimage/run/user/0 2>/dev/null || true
+sudo umount -l /mnt/sysimage/run        2>/dev/null || true
+sudo umount -l /mnt/sysimage            2>/dev/null || true
 
 echo "==> Building AvalancheDestroy KWin effect…"
 sudo dnf install -y cmake ninja-build kwin-devel extra-cmake-modules \
