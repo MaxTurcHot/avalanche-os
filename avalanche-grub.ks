@@ -418,15 +418,22 @@ title-text: ""
 }
 TXTEOF
 
-# ── GRUB_THEME ───────────────────────────────────────────────────────────────
+# ── GRUB_THEME + graphics mode ───────────────────────────────────────────────
 THEME_LINE='GRUB_THEME=/boot/grub2/themes/avalanche/theme.txt'
-if grep -q '^GRUB_THEME=' "$GRUBDEF"; then
-    sed -i "s|^GRUB_THEME=.*|$THEME_LINE|" "$GRUBDEF"
-else
-    echo "$THEME_LINE" >> "$GRUBDEF"
-fi
+grub_set() {
+    local key="$1" val="$2"
+    if grep -q "^${key}=" "$GRUBDEF"; then
+        sed -i "s|^${key}=.*|${key}=${val}|" "$GRUBDEF"
+    else
+        echo "${key}=${val}" >> "$GRUBDEF"
+    fi
+}
 
-echo "AVALANCHE: GRUB theme -> $THEME_LINE"
-grep "^GRUB_DISTRIBUTOR=\|^GRUB_THEME=" "$GRUBDEF"
+grub_set GRUB_THEME      "/boot/grub2/themes/avalanche/theme.txt"
+grub_set GRUB_GFXMODE    "auto"
+grub_set GRUB_TERMINAL_OUTPUT "gfxterm"
+
+echo "AVALANCHE: GRUB theme + gfxterm enabled"
+grep "^GRUB_DISTRIBUTOR=\|^GRUB_THEME=\|^GRUB_GFXMODE=\|^GRUB_TERMINAL" "$GRUBDEF"
 
 %end

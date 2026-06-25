@@ -118,17 +118,28 @@ def main():
 
     heredoc(out, f"{THEME_DIR}/theme.txt", THEME_TXT)
 
-    # ── GRUB_THEME in /etc/default/grub ───────────────────────────────────────
-    out.append("# ── GRUB_THEME ───────────────────────────────────────────────────────────────")
+    # ── GRUB_THEME + graphics mode in /etc/default/grub ──────────────────────
+    # GRUB_GFXMODE and GRUB_TERMINAL_OUTPUT=gfxterm are required — without them
+    # GRUB stays in text mode and silently ignores the theme even if referenced
+    # correctly in grub.cfg.
+    out.append("# ── GRUB_THEME + graphics mode ───────────────────────────────────────────────")
     out.append(f"THEME_LINE='GRUB_THEME={THEME_DIR}/theme.txt'")
-    out.append('if grep -q \'^GRUB_THEME=\' "$GRUBDEF"; then')
-    out.append('    sed -i "s|^GRUB_THEME=.*|$THEME_LINE|" "$GRUBDEF"')
-    out.append("else")
-    out.append('    echo "$THEME_LINE" >> "$GRUBDEF"')
-    out.append("fi")
+    # Helper: set or replace a key in /etc/default/grub
+    out.append("""grub_set() {
+    local key="$1" val="$2"
+    if grep -q "^${key}=" "$GRUBDEF"; then
+        sed -i "s|^${key}=.*|${key}=${val}|" "$GRUBDEF"
+    else
+        echo "${key}=${val}" >> "$GRUBDEF"
+    fi
+}""")
     out.append("")
-    out.append('echo "AVALANCHE: GRUB theme -> $THEME_LINE"')
-    out.append('grep "^GRUB_DISTRIBUTOR=\\|^GRUB_THEME=" "$GRUBDEF"')
+    out.append('grub_set GRUB_THEME      "' + f'{THEME_DIR}/theme.txt' + '"')
+    out.append('grub_set GRUB_GFXMODE    "auto"')
+    out.append('grub_set GRUB_TERMINAL_OUTPUT "gfxterm"')
+    out.append("")
+    out.append('echo "AVALANCHE: GRUB theme + gfxterm enabled"')
+    out.append('grep "^GRUB_DISTRIBUTOR=\\|^GRUB_THEME=\\|^GRUB_GFXMODE=\\|^GRUB_TERMINAL" "$GRUBDEF"')
     out.append("")
     out.append("%end")
     out.append("")
