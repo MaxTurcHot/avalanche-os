@@ -21,6 +21,9 @@ RESULTDIR="/var/lmc"
 
 echo "==> HEAD is $(git rev-parse --short HEAD): $(git log -1 --pretty=%s)"
 
+# Discard any local edits (e.g. files scp'd for testing) so git pull is clean.
+git -C "$(dirname "${BASH_SOURCE[0]}")" reset --hard HEAD 2>/dev/null || true
+
 # Clear stale state left by previous failed builds.
 sudo rm -f /run/anaconda.pid /run/user/0/anaconda.pid /run/user/"$(id -u)"/anaconda.pid
 sudo rm -rf /var/tmp/dnf.package.cache
