@@ -1,0 +1,15 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [{ "Name": "Maxime Turcotte" }],
+        "Category": "Online Services",
+        "Description": "Live powder conditions for your watched resorts, powered by wheretosnow.",
+        "EnabledByDefault": false,
+        "Id": "org.avalanche.snowwatch",
+        "License": "GPL-2.0-or-later",
+        "Name": "Snow Watch",
+        "Version": "1.0"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-StandAloneApp": false
+}
