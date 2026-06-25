@@ -1,28 +1,14 @@
 # avalanche-effects.ks — KWin window close animation
 #
-# Uses the built-in Fall Apart effect (tiles fall with gravity on window close).
-# 20px block size gives a powder-snow texture vs the default 40px.
+# Fall Apart effect attempts were unsuccessful (KWin 6 compiles all effects
+# into its binary; plugin-path and config-layer approaches don't reliably
+# enable it from a kickstart %post).
 #
-# Note: a custom AvalancheDestroy C++ effect exists in kwin/ but requires
-# rebuilding kwin itself (KWin 6 compiles all effects into the binary).
-# See DEVPLAN.md for the standalone project plan.
+# A custom AvalancheDestroy C++ effect exists in kwin/ but requires rebuilding
+# kwin itself. See DEVPLAN.md for the standalone project plan.
+#
+# This file is intentionally a no-op — effects left at KDE stock defaults.
 
 %post
-
-mkdir -p /etc/xdg/kdedefaults
-
-# Write to /etc/xdg/kwinrc (system config) not kdedefaults — effect plugin
-# enablement is not picked up from the kdedefaults layer.
-mkdir -p /etc/xdg
-cat >> /etc/xdg/kwinrc << 'TXTEOF'
-
-[Plugins]
-fallapartEnabled=true
-
-[Effect-fallapart]
-BlockSize=40
-TXTEOF
-
-echo "AVALANCHE: Fall Apart close animation enabled"
-
+echo "AVALANCHE: effects — no custom KWin config applied (stock defaults)"
 %end
