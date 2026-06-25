@@ -115,6 +115,30 @@ decisions, complex edits, and anything that needs full project context.
   cares about coherent design systems (see prior FEA:MM SVG/icon/logo work).
 - No fixed scope or deadline. It's fine to keep iterating indefinitely.
 
+### Slow down before build changes (important)
+
+Every package or feature added to the kickstart has a cost: ISO size, build
+time, complexity, and maintenance. **Before implementing any change that affects
+the build, surface the tradeoffs explicitly so Maxime can make an informed
+decision.** Don't just implement what was asked — check whether the ask would
+survive a cost/benefit conversation.
+
+Specifically, before adding packages, repos, or %post steps:
+
+1. **Estimate size impact.** How much does this add to the ISO? (RPMs are
+   typically listed with their size; Steam alone is ~1 GB.) State it plainly.
+2. **Name the tradeoffs.** Native RPM vs Flatpak vs firstboot service each
+   have different implications for ISO size, boot time, and reliability.
+3. **Question the default.** If a simpler or lighter alternative exists, name
+   it: "We could also do X which is 200 MB lighter — your call."
+4. **Wait for explicit confirmation** before touching kickstart files, even if
+   the plan was already approved. Approval of a feature doesn't mean approval
+   of the specific implementation weight.
+
+This is especially important for: new package groups, third-party repos
+(RPM Fusion, Microsoft, DBeaver), Flatpak installs, and anything that
+changes `%packages` or adds `dnf install` in `%post`.
+
 ### Teach as you go (important)
 
 Maxime is learning how to build a Linux distribution through this project — the
