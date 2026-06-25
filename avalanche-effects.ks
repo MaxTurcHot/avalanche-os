@@ -14,12 +14,12 @@ mkdir -p /etc/xdg/kdedefaults
 cat >> /etc/xdg/kdedefaults/kwinrc << 'TXTEOF'
 
 [Plugins]
-fallapartEnabled=true
+kwin4_effect_fallapartEnabled=true
 
 [Effect-fallapart]
-BlockSize=20
+BlockSize=40
 TXTEOF
 
-echo "AVALANCHE: Fall Apart close animation enabled (20px blocks)"
+echo "AVALANCHE: Fall Apart close animation enabled"
 
 %end

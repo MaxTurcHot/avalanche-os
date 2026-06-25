@@ -35,8 +35,11 @@
 # Regenerate with: python3 scripts/gen-bootsplash-ks.py
 %include avalanche-bootsplash.ks
 
-# ── Apps: Starship prompt, Flathub, firstboot Flatpak installer ───────────────
+# ── Apps: Starship, RPM Fusion, Steam, VS Code, DBeaver, codecs ──────────────
 %include avalanche-apps.ks
+
+# ── Snow Watch Plasma widget (wheretosnow API) ────────────────────────────────
+%include avalanche-widget.ks
 
 # ── KWin effects: Fall Apart close animation (20px blocks, powder-snow feel) ─
 # Custom C++ AvalancheDestroy effect is in kwin/ — see DEVPLAN.md.

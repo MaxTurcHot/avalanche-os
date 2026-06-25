@@ -1,5 +1,4 @@
-# avalanche-apps.ks — Starship prompt, Flathub, and firstboot Flatpak installer
-# RPM packages for this layer live in fedora-kde-common.ks
+# avalanche-apps.ks — Starship prompt, RPM Fusion, apps, and codecs
 
 %packages
 %end
@@ -44,39 +43,43 @@ success_symbol = "[❯](bold #2563eb)"
 error_symbol = "[caught edge ❯](bold #ef4444)"
 EOF
 
-# ── Flathub remote ────────────────────────────────────────────────────────────
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+# ── RPM Fusion (free + non-free) ──────────────────────────────────────────────
+dnf install -y \
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-# ── Firstboot Flatpak installer ───────────────────────────────────────────────
-cat << 'EOF' > /usr/local/bin/avalanche-flatpak-setup.sh
-#!/bin/bash
-flatpak install -y flathub \
-  com.valvesoftware.Steam \
-  com.visualstudio.code \
-  io.dbeaver.DBeaverCommunity \
-  com.bambulab.BambuStudio
+# ── Multimedia codecs ─────────────────────────────────────────────────────────
+dnf install -y \
+  ffmpeg \
+  gstreamer1-plugins-ugly \
+  gstreamer1-plugins-bad-freeworld \
+  gstreamer1-plugins-bad-free \
+  gstreamer1-plugin-libav \
+  libdvdcss
 
-rm -f /etc/avalanche-flatpak-setup.pending
-systemctl disable avalanche-flatpak-setup.service
+# ── Steam (RPM Fusion non-free) ───────────────────────────────────────────────
+dnf install -y steam
+
+# ── Visual Studio Code (Microsoft repo) ──────────────────────────────────────
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
+cat << 'EOF' > /etc/yum.repos.d/vscode.repo
+[code]
+name=Visual Studio Code
+baseurl=https://packages.microsoft.com/yumrepos/vscode
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
-chmod +x /usr/local/bin/avalanche-flatpak-setup.sh
+dnf install -y code
 
-cat << 'EOF' > /etc/systemd/system/avalanche-flatpak-setup.service
-[Unit]
-Description=Avalanche OS — install Flatpak apps on first boot
-After=network-online.target
-Wants=network-online.target
-ConditionPathExists=/etc/avalanche-flatpak-setup.pending
-
-[Service]
-Type=oneshot
-ExecStart=/usr/local/bin/avalanche-flatpak-setup.sh
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
+# ── DBeaver Community (official repo) ─────────────────────────────────────────
+cat << 'EOF' > /etc/yum.repos.d/dbeaver.repo
+[dbeaver]
+name=DBeaver Community
+baseurl=https://dbeaver.io/files/rpm/stable/x86_64
+enabled=1
+gpgcheck=0
 EOF
+dnf install -y dbeaver-ce
 
-touch /etc/avalanche-flatpak-setup.pending
-systemctl enable avalanche-flatpak-setup.service
 %end
