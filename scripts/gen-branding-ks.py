@@ -96,21 +96,31 @@ def main():
     out.append('echo "AVALANCHE: logo icon installed (avalanche-logo-icon)"')
     out.append("")
 
-    # ── Start menu (Kickoff) icon: override all start-here variants ──────────
-    # KDE Plasma 6 may look for start-here, start-here-kde, or start-here-fedora
-    # depending on the icon theme. Install all three + rebuild KDE's sycoca cache.
-    out.append("# ── Start menu icon (Kickoff button — all start-here variants) ──────────────")
+    # ── Start menu (Kickoff) icon ────────────────────────────────────────────
+    # breeze-dark owns start-here-kde at multiple sizes under places/ and is
+    # searched BEFORE hicolor, so we must override inside breeze-dark itself.
+    # Also override hicolor as a fallback for other themes.
+    out.append("# ── Start menu icon (Kickoff) — override in breeze-dark + hicolor ──────────")
     SVG = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">\n'
            '  <title>Avalanche OS</title>\n'
            '  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>\n'
            '  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>\n'
            '  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>\n'
            '</svg>')
+    # breeze-dark: all sizes × both icon names Plasma uses for Kickoff
+    BREEZE_SIZES = ("16", "22", "24", "32", "64", "96")
+    BREEZE_NAMES = ("start-here-kde", "start-here-kde-plasma")
+    for size in BREEZE_SIZES:
+        for name in BREEZE_NAMES:
+            path = f"/usr/share/icons/breeze-dark/places/{size}/{name}.svg"
+            heredoc(out, path, SVG)
+    # hicolor: scalable fallback for other themes
     for icon_name in ("start-here", "start-here-kde", "start-here-fedora"):
         heredoc(out, f"/usr/share/icons/hicolor/scalable/apps/{icon_name}.svg", SVG)
     out.append("gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true")
+    out.append("gtk-update-icon-cache -f -t /usr/share/icons/breeze-dark 2>/dev/null || true")
     out.append("kbuildsycoca6 --noincremental 2>/dev/null || true")
-    out.append('echo "AVALANCHE: start-here icons replaced with Avalanche mark"')
+    out.append('echo "AVALANCHE: start-here icons replaced in breeze-dark + hicolor"')
     out.append("")
 
     # ── Wallpaper: ship as a Plasma wallpaper package ─────────────────────────

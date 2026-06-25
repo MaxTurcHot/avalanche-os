@@ -11,10 +11,13 @@
 
 mkdir -p /etc/xdg/kdedefaults
 
-cat >> /etc/xdg/kdedefaults/kwinrc << 'TXTEOF'
+# Write to /etc/xdg/kwinrc (system config) not kdedefaults — effect plugin
+# enablement is not picked up from the kdedefaults layer.
+mkdir -p /etc/xdg
+cat >> /etc/xdg/kwinrc << 'TXTEOF'
 
 [Plugins]
-kwin4_effect_fallapartEnabled=true
+fallapartEnabled=true
 
 [Effect-fallapart]
 BlockSize=40

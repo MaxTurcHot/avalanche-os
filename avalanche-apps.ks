@@ -72,14 +72,7 @@ gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
 dnf install -y code
 
-# ── DBeaver Community (official repo) ─────────────────────────────────────────
-cat << 'EOF' > /etc/yum.repos.d/dbeaver.repo
-[dbeaver]
-name=DBeaver Community
-baseurl=https://dbeaver.io/files/rpm/stable/x86_64
-enabled=1
-gpgcheck=0
-EOF
-dnf install -y dbeaver-ce
+# ── DBeaver Community (direct RPM — their custom repo URL changed) ────────────
+dnf install -y https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm
 
 %end

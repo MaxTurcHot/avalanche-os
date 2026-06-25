@@ -379,7 +379,127 @@ B64EOF
 gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
 echo "AVALANCHE: logo icon installed (avalanche-logo-icon)"
 
-# ── Start menu icon (Kickoff button — all start-here variants) ──────────────
+# ── Start menu icon (Kickoff) — override in breeze-dark + hicolor ──────────
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/16/start-here-kde.svg")"
+cat > "/usr/share/icons/breeze-dark/places/16/start-here-kde.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/16/start-here-kde-plasma.svg")"
+cat > "/usr/share/icons/breeze-dark/places/16/start-here-kde-plasma.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/22/start-here-kde.svg")"
+cat > "/usr/share/icons/breeze-dark/places/22/start-here-kde.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/22/start-here-kde-plasma.svg")"
+cat > "/usr/share/icons/breeze-dark/places/22/start-here-kde-plasma.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/24/start-here-kde.svg")"
+cat > "/usr/share/icons/breeze-dark/places/24/start-here-kde.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/24/start-here-kde-plasma.svg")"
+cat > "/usr/share/icons/breeze-dark/places/24/start-here-kde-plasma.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/32/start-here-kde.svg")"
+cat > "/usr/share/icons/breeze-dark/places/32/start-here-kde.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/32/start-here-kde-plasma.svg")"
+cat > "/usr/share/icons/breeze-dark/places/32/start-here-kde-plasma.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/64/start-here-kde.svg")"
+cat > "/usr/share/icons/breeze-dark/places/64/start-here-kde.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/64/start-here-kde-plasma.svg")"
+cat > "/usr/share/icons/breeze-dark/places/64/start-here-kde-plasma.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/96/start-here-kde.svg")"
+cat > "/usr/share/icons/breeze-dark/places/96/start-here-kde.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
+mkdir -p "$(dirname "/usr/share/icons/breeze-dark/places/96/start-here-kde-plasma.svg")"
+cat > "/usr/share/icons/breeze-dark/places/96/start-here-kde-plasma.svg" << 'TXTEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
+  <title>Avalanche OS</title>
+  <polygon points="42,14 8,86 74,86" fill="#E7EEF3"></polygon>
+  <polygon points="82,40 54,98 110,98" fill="#46627A"></polygon>
+  <polygon points="110,64 100,98 120,98" fill="#FF4D1C"></polygon>
+</svg>
+TXTEOF
+
 mkdir -p "$(dirname "/usr/share/icons/hicolor/scalable/apps/start-here.svg")"
 cat > "/usr/share/icons/hicolor/scalable/apps/start-here.svg" << 'TXTEOF'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 110" width="124" height="110" role="img" aria-label="Avalanche OS mark">
@@ -411,8 +531,9 @@ cat > "/usr/share/icons/hicolor/scalable/apps/start-here-fedora.svg" << 'TXTEOF'
 TXTEOF
 
 gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
+gtk-update-icon-cache -f -t /usr/share/icons/breeze-dark 2>/dev/null || true
 kbuildsycoca6 --noincremental 2>/dev/null || true
-echo "AVALANCHE: start-here icons replaced with Avalanche mark"
+echo "AVALANCHE: start-here icons replaced in breeze-dark + hicolor"
 
 # ── Wallpaper package (referenced by dir name 'AvalancheOS') ──────────────
 mkdir -p "$(dirname "/usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png")"
