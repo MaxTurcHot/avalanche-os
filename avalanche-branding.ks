@@ -3115,9 +3115,34 @@ theme=Breeze
 Theme=org.kde.Breeze
 TXTEOF
 
+mkdir -p "$(dirname "/usr/share/plasma/look-and-feel/org.avalanche.desktop/contents/layouts/org.kde.plasma.desktop-layout.js")"
+cat > "/usr/share/plasma/look-and-feel/org.avalanche.desktop/contents/layouts/org.kde.plasma.desktop-layout.js" << 'TXTEOF'
+loadTemplate("org.kde.plasma.desktop.defaultPanel")
+
+var desktopsArray = desktopsForActivity(currentActivity());
+for (var j = 0; j < desktopsArray.length; j++) {
+    var desktop = desktopsArray[j];
+    desktop.wallpaperPlugin = "org.kde.image";
+    desktop.currentConfigGroup = ["Wallpaper", "org.kde.image", "General"];
+    desktop.writeConfig("Image", "file:///usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png");
+    desktop.currentConfigGroup = [];
+}
+TXTEOF
+
 echo "AVALANCHE: look-and-feel installed (org.avalanche.desktop)"
 
-# ── kdedefaults cascade (makes the theme the system default) ──────────────
+# ── kde-settings profile (Fedora-native LnF hook for new users) ──────────
+KDE_PROFILE=/usr/share/kde-settings/kde-profile/default/xdg/kdeglobals
+if [ -f "$KDE_PROFILE" ]; then
+    kwriteconfig6 --file "$KDE_PROFILE" --group KDE     --key LookAndFeelPackage org.avalanche.desktop
+    kwriteconfig6 --file "$KDE_PROFILE" --group General  --key ColorScheme AvalancheOS
+    kwriteconfig6 --file "$KDE_PROFILE" --group Icons    --key Theme breeze-dark
+    echo "AVALANCHE: kde-settings profile patched -> org.avalanche.desktop"
+else
+    echo "AVALANCHE WARNING: kde-settings profile not found, skipping"
+fi
+
+# ── kdedefaults cascade (covers live session + belt-and-suspenders) ───────
 mkdir -p "$(dirname "/etc/xdg/kdedefaults/package")"
 cat > "/etc/xdg/kdedefaults/package" << 'TXTEOF'
 org.avalanche.desktop

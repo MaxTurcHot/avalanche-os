@@ -148,8 +148,8 @@ def main():
         "EnabledByDefault": true
     }
 }""")
-    # contents/defaults mirrors Fedora's stock LnF (two-token group headers).
-    # Image=AvalancheOS resolves to the wallpaper package dir name above.
+    # contents/defaults: two-token group headers, Image= resolves to the
+    # wallpaper package dir name at /usr/share/wallpapers/AvalancheOS/.
     heredoc(out, f"{LNF_PKG}/contents/defaults", """[kdeglobals][KDE]
 widgetStyle=Breeze
 
@@ -174,14 +174,45 @@ theme=Breeze
 
 [KSplash]
 Theme=org.kde.Breeze""")
+
+    # layout.js: sets wallpaper explicitly when LnF is applied to a new user.
+    # Without this Plasma may fall back to the Fedora LnF layout which sets
+    # the Fedora wallpaper. This mirrors what plasma-lookandfeel-fedora does.
+    heredoc(out, f"{LNF_PKG}/contents/layouts/org.kde.plasma.desktop-layout.js",
+            """loadTemplate("org.kde.plasma.desktop.defaultPanel")
+
+var desktopsArray = desktopsForActivity(currentActivity());
+for (var j = 0; j < desktopsArray.length; j++) {
+    var desktop = desktopsArray[j];
+    desktop.wallpaperPlugin = "org.kde.image";
+    desktop.currentConfigGroup = ["Wallpaper", "org.kde.image", "General"];
+    desktop.writeConfig("Image", "file:///usr/share/wallpapers/AvalancheOS/contents/images/3840x2160.png");
+    desktop.currentConfigGroup = [];
+}""")
     out.append('echo "AVALANCHE: look-and-feel installed (org.avalanche.desktop)"')
     out.append("")
 
+    # ── kde-settings profile: the Fedora-native way to set the system LnF ───
+    # /usr/share/kde-settings/kde-profile/default/xdg/kdeglobals is read by
+    # Plasma on every new-user first login. It ships pointing to Fedora's LnF;
+    # we patch it to point to ours so the wallpaper, icons, and color scheme
+    # are applied correctly for users created by the Anaconda installer.
+    out.append("# ── kde-settings profile (Fedora-native LnF hook for new users) ──────────")
+    out.append("KDE_PROFILE=/usr/share/kde-settings/kde-profile/default/xdg/kdeglobals")
+    out.append("if [ -f \"$KDE_PROFILE\" ]; then")
+    out.append("    kwriteconfig6 --file \"$KDE_PROFILE\" --group KDE     --key LookAndFeelPackage org.avalanche.desktop")
+    out.append("    kwriteconfig6 --file \"$KDE_PROFILE\" --group General  --key ColorScheme AvalancheOS")
+    out.append("    kwriteconfig6 --file \"$KDE_PROFILE\" --group Icons    --key Theme breeze-dark")
+    out.append('    echo "AVALANCHE: kde-settings profile patched -> org.avalanche.desktop"')
+    out.append("else")
+    out.append('    echo "AVALANCHE WARNING: kde-settings profile not found, skipping"')
+    out.append("fi")
+    out.append("")
+
     # ── System-default cascade: /etc/xdg/kdedefaults/ ─────────────────────────
-    # This is the layer Plasma treats as the distro default. `package` names the
-    # active global theme; the split files mirror its contents/defaults so a
-    # fresh user (incl. liveuser) inherits them on first login.
-    out.append("# ── kdedefaults cascade (makes the theme the system default) ──────────────")
+    # Belt-and-suspenders: kdedefaults covers cases where the kde-settings
+    # profile isn't read (e.g. the live session liveuser).
+    out.append("# ── kdedefaults cascade (covers live session + belt-and-suspenders) ───────")
     heredoc(out, "/etc/xdg/kdedefaults/package", "org.avalanche.desktop")
     heredoc(out, "/etc/xdg/kdedefaults/kdeglobals", """[KDE]
 LookAndFeelPackage=org.avalanche.desktop
