@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Snowfall
+GenericName=System Updates
+Comment=Call down pending system updates as fresh snow
+Exec=plasmawindowed org.avalanche.snowupdate
+Icon=avalanche-snowfall
+Categories=System;
+Terminal=false
+StartupNotify=true

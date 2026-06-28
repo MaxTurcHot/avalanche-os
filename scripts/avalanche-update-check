@@ -1,0 +1,24 @@
+#!/bin/bash
+# Avalanche OS — daily login gate for the "Snowfall" updater.
+#
+# Launched from /etc/xdg/autostart on login. Shows the Snowfall window at most
+# once per day, and only when there are updates pending. Silent otherwise.
+set -u
+
+STAMP="${XDG_CACHE_HOME:-$HOME/.cache}/avalanche/update-last-shown"
+mkdir -p "$(dirname "$STAMP")"
+
+# At most once per 24h.
+if [[ -f "$STAMP" ]]; then
+    last=$(stat -c %Y "$STAMP" 2>/dev/null || echo 0)
+    (( $(date +%s) - last < 86400 )) && exit 0
+fi
+
+# Let the desktop and network settle before hitting the metadata.
+sleep 20
+
+count=$(dnf5 -q check-update 2>/dev/null | awk 'NF>=3 && $1 ~ /\./ {c++} END{print c+0}')
+[[ "${count:-0}" -gt 0 ]] || exit 0
+
+plasmawindowed org.avalanche.snowupdate &
+touch "$STAMP"

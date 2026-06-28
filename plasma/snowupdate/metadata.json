@@ -1,0 +1,16 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [{ "Name": "Maxime Turcotte" }],
+        "Category": "System Information",
+        "Description": "Avalanche OS — turns pending system updates into fresh snowfall you control.",
+        "EnabledByDefault": false,
+        "Icon": "avalanche-snowfall",
+        "Id": "org.avalanche.snowupdate",
+        "License": "GPL-2.0-or-later",
+        "Name": "Snowfall",
+        "Version": "1.0"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-StandAloneApp": true
+}

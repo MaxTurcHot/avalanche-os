@@ -1,0 +1,47 @@
+#!/bin/bash
+# Avalanche OS — "Snowfall" updater backend.
+#
+#   avalanche-update-run count   Print the number of pending package updates
+#                                (no root needed). Used for the "N mm" headline.
+#   avalanche-update-run apply   Run the system upgrade via pkexec (graphical
+#                                polkit prompt), streaming progress as
+#                                "<current> <total>" lines into the progress file
+#                                the QML scene polls. Writes "done <rc>" at the end.
+#
+# The progress file path is computed identically here and in main.qml so the QML
+# needs no environment knowledge: "${XDG_RUNTIME_DIR:-/tmp}/avalanche-update.progress"
+set -u
+
+PROG="${XDG_RUNTIME_DIR:-/tmp}/avalanche-update.progress"
+LOG="${XDG_RUNTIME_DIR:-/tmp}/avalanche-update.log"
+
+count_updates() {
+    # dnf5 check-update lists "name.arch  version  repo" rows (exit 100 if any).
+    # Count rows whose first field looks like name.arch (contains a dot).
+    dnf5 -q check-update 2>/dev/null | awk 'NF>=3 && $1 ~ /\./ {c++} END{print c+0}'
+}
+
+case "${1:-}" in
+  count)
+    count_updates
+    ;;
+  apply)
+    echo "start" > "$PROG"
+    : > "$LOG"
+    # dnf5 emits "[x/y]" transaction progress even when piped; stdbuf keeps it
+    # line-buffered so we see it live. Raw output tee'd to $LOG for debugging.
+    # pkexec prompts via the graphical polkit agent. NOTE: y is the transaction
+    # total (incl. dependencies) and can exceed the check-update count.
+    stdbuf -oL pkexec dnf5 -y upgrade 2>&1 | while IFS= read -r line; do
+        printf '%s\n' "$line" >> "$LOG"
+        if [[ "$line" =~ \[[[:space:]]*([0-9]+)/([0-9]+)[[:space:]]*\] ]]; then
+            echo "${BASH_REMATCH[1]} ${BASH_REMATCH[2]}" > "$PROG"
+        fi
+    done
+    echo "done ${PIPESTATUS[0]}" > "$PROG"
+    ;;
+  *)
+    echo "usage: $0 {count|apply}" >&2
+    exit 2
+    ;;
+esac

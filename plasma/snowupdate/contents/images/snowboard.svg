@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Avalanche OS — Snowfall updater: a normal snowboard, planted nose-up.
+     Flat-geometric to match the brand. Drawn upright (vertical); the QML
+     scene applies the slight planted tilt. viewBox is tall & narrow. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 460" width="120" height="460">
+  <defs>
+    <linearGradient id="deck" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"   stop-color="#1b2536"/>
+      <stop offset="0.5" stop-color="#243349"/>
+      <stop offset="1"   stop-color="#161e2c"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0c1119"/>
+      <stop offset="1" stop-color="#0c1119"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Board body: rounded nose (top) and tail (bottom), gentle sidecut waist.
+       Symmetric twin-ish shape. -->
+  <path d="
+      M 60 6
+      C 86 6 100 26 100 58
+      C 100 110 96 150 94 200
+      C 92 250 92 250 94 300
+      C 96 350 100 392 100 418
+      C 100 446 84 454 60 454
+      C 36 454 20 446 20 418
+      C 20 392 24 350 26 300
+      C 28 250 28 250 26 200
+      C 24 150 20 110 20 58
+      C 20 26 34 6 60 6 Z"
+    fill="url(#deck)" stroke="url(#edge)" stroke-width="3"/>
+
+  <!-- Orange signature stripe down the centre line -->
+  <rect x="54" y="40" width="12" height="380" rx="6" fill="#FF4D1C"/>
+
+  <!-- Bindings: two angled straps/baseplates (highbacks) -->
+  <g fill="#0e1420" stroke="#05080d" stroke-width="2">
+    <rect x="34" y="150" width="52" height="40" rx="8" transform="rotate(-9 60 170)"/>
+    <rect x="34" y="270" width="52" height="40" rx="8" transform="rotate(9 60 290)"/>
+  </g>
+  <!-- Binding straps (lighter) -->
+  <g fill="none" stroke="#33445c" stroke-width="5" stroke-linecap="round">
+    <line x1="40" y1="164" x2="80" y2="158" transform="rotate(-9 60 170)"/>
+    <line x1="40" y1="182" x2="80" y2="176" transform="rotate(-9 60 170)"/>
+    <line x1="40" y1="284" x2="80" y2="290" transform="rotate(9 60 290)"/>
+    <line x1="40" y1="302" x2="80" y2="308" transform="rotate(9 60 290)"/>
+  </g>
+</svg>

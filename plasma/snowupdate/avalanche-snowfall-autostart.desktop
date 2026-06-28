@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Snowfall — daily check
+Comment=On login, show Snowfall once a day when updates are pending
+Exec=sh -c "$HOME/.local/bin/avalanche-update-check"
+Icon=avalanche-snowfall
+Terminal=false
+X-KDE-autostart-phase=2
