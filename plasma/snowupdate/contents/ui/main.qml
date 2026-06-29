@@ -33,12 +33,23 @@ PlasmoidItem {
     readonly property color cAccent:   "#FF4D1C"
     readonly property color cText:     "#ffffff"
     readonly property color cSub:      "#8aa0b8"
+    // Avalanche danger rose — security severity maps onto a backcountry rating.
+    readonly property color cDangerHigh: "#e0301e"   // Critical  → High
+    readonly property color cDangerCons: "#f6871f"   // Important → Considerable
+    readonly property color cDangerMod:  "#f2c500"   // Moderate  → Moderate
+    readonly property color cDangerLow:  "#5a9e4b"   // Low       → Low
 
     // ── Dev stub ────────────────────────────────────────────────────────────
     // While true, "Call the storm" fakes progress with a Timer instead of
     // running dnf/pkexec — lets us tune the animation without real upgrades.
     property bool devStub: false
     property int  fakeCount: 23
+    // Fake severity counts so each danger rating can be tuned without real
+    // advisories (only used when devStub is true).
+    property int  fakeCrit: 0
+    property int  fakeImp:  1
+    property int  fakeMod:  1
+    property int  fakeLow:  0
     // Same QML works on the laptop (~/.local/bin) and the ISO (/usr/local/bin):
     // we set PATH per-invocation (shell-expanded by the executable engine)
     // instead of hardcoding a location.
@@ -52,6 +63,26 @@ PlasmoidItem {
     property bool needsReboot: false
     property bool stormStarted: false   // upgrade launched (detached, survives close)
     property int  txTotal: 0            // dnf5 transaction total (incl. deps)
+
+    // Pending security-advisory severity counts → avalanche danger rating.
+    property int  secCrit: 0
+    property int  secImp:  0
+    property int  secMod:  0
+    property int  secLow:  0
+    readonly property int secTotal: secCrit + secImp + secMod + secLow
+    property bool forecastOpen: false   // "the full forecast" reveal toggle
+
+    // Highest present severity drives the rating label + colour (the rose above).
+    readonly property string dangerLabel:
+        secCrit > 0 ? "High"         :
+        secImp  > 0 ? "Considerable" :
+        secMod  > 0 ? "Moderate"     :
+        secLow  > 0 ? "Low"          : ""
+    readonly property color dangerColor:
+        secCrit > 0 ? cDangerHigh :
+        secImp  > 0 ? cDangerCons :
+        secMod  > 0 ? cDangerMod  :
+        secLow  > 0 ? cDangerLow  : cSub
 
     property real progress: 0           // target fraction 0..1
     property real shown: 0              // settled floor fraction the scene renders
@@ -97,6 +128,13 @@ PlasmoidItem {
             if (source.indexOf("count") !== -1) {
                 root.updateCount = parseInt(out) || 0
                 root.phase = root.updateCount > 0 ? "idle" : "empty"
+            } else if (source.indexOf("advisories") !== -1) {
+                // "<crit> <imp> <mod> <low>" — drives the danger chip + bulletin.
+                var p = out.split(/\s+/)
+                root.secCrit = parseInt(p[0]) || 0
+                root.secImp  = parseInt(p[1]) || 0
+                root.secMod  = parseInt(p[2]) || 0
+                root.secLow  = parseInt(p[3]) || 0
             }
             // The detached "apply" launch returns immediately; completion is
             // detected by the progress poll below, not here.
@@ -194,10 +232,12 @@ PlasmoidItem {
     Component.onCompleted: {
         if (devStub) {
             updateCount = fakeCount
+            secCrit = fakeCrit; secImp = fakeImp; secMod = fakeMod; secLow = fakeLow
             phase = "idle"
         } else {
             phase = "checking"
             exec.connectSource(helperEnv + " avalanche-update-run count")
+            exec.connectSource(helperEnv + " avalanche-update-run advisories")
         }
     }
 
@@ -410,6 +450,95 @@ PlasmoidItem {
                         case "falling": return root.doneCount + " / " + (root.txTotal > 0 ? root.txTotal : root.updateCount) + " mm down"
                         case "done":    return root.needsReboot ? "Reboot to let it settle." : ""
                         default:        return ""
+                        }
+                    }
+                }
+
+                // Avalanche danger chip — surfaces automatically, only when
+                // security advisories are pending and we're idle.
+                Rectangle {
+                    visible: root.phase === "idle" && root.secTotal > 0
+                    Layout.topMargin: 10
+                    implicitHeight: 28
+                    implicitWidth: chipRow.implicitWidth + 24
+                    radius: height / 2
+                    color: Qt.rgba(root.dangerColor.r, root.dangerColor.g,
+                                   root.dangerColor.b, 0.18)
+                    border.width: 1
+                    border.color: root.dangerColor
+                    RowLayout {
+                        id: chipRow
+                        anchors.centerIn: parent
+                        spacing: 7
+                        Rectangle {            // severity dot
+                            width: 9; height: 9; radius: 4.5
+                            color: root.dangerColor
+                            Layout.alignment: Qt.AlignVCenter
+                        }
+                        Text {
+                            text: "⚠ " + root.dangerLabel + " — " + root.secTotal
+                                  + " security advisor" + (root.secTotal === 1 ? "y" : "ies")
+                            color: root.cText
+                            font.pixelSize: 13
+                            font.bold: true
+                        }
+                    }
+                }
+
+                // On-demand reveal toggle — "the full forecast"
+                Text {
+                    visible: root.phase === "idle"
+                    Layout.topMargin: 10
+                    text: root.forecastOpen ? "the full forecast  ▴"
+                                            : "the full forecast  ▾"
+                    color: root.cSub
+                    font.pixelSize: 13
+                    font.underline: forecastMa.containsMouse
+                    MouseArea {
+                        id: forecastMa
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: root.forecastOpen = !root.forecastOpen
+                    }
+                }
+
+                // The bulletin — per-severity breakdown, hidden until asked.
+                ColumnLayout {
+                    visible: root.phase === "idle" && root.forecastOpen
+                    Layout.topMargin: 6
+                    Layout.leftMargin: 2
+                    spacing: 5
+
+                    Text {
+                        visible: root.secTotal === 0
+                        Layout.fillWidth: true
+                        text: "No security advisories on radar — routine snow."
+                        color: root.cSub
+                        font.pixelSize: 13
+                        wrapMode: Text.WordWrap
+                    }
+
+                    Repeater {
+                        model: [
+                            { n: root.secCrit, label: "Critical",  c: root.cDangerHigh },
+                            { n: root.secImp,  label: "Important", c: root.cDangerCons },
+                            { n: root.secMod,  label: "Moderate",  c: root.cDangerMod  },
+                            { n: root.secLow,  label: "Low",       c: root.cDangerLow  }
+                        ]
+                        delegate: RowLayout {
+                            visible: modelData.n > 0
+                            spacing: 8
+                            Rectangle {
+                                width: 10; height: 10; radius: 2
+                                color: modelData.c
+                                Layout.alignment: Qt.AlignVCenter
+                            }
+                            Text {
+                                text: modelData.label + " · " + modelData.n
+                                color: root.cText
+                                font.pixelSize: 13
+                            }
                         }
                     }
                 }
