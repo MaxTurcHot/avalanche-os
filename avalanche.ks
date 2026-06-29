@@ -38,8 +38,16 @@
 # ── Apps: Starship, RPM Fusion, Steam, VS Code, DBeaver, codecs, Firefox bookmarks
 %include avalanche-apps.ks
 
+# ── Terminal: kitty as default (replaces Konsole). Regenerate with:
+#   python3 scripts/gen-terminal-ks.py
+%include avalanche-terminal.ks
+
 # ── Snow Watch Plasma widget (wheretosnow API) ────────────────────────────────
 %include avalanche-widget.ks
+
+# ── Snowfall updater (plasmoid + daily autostart + frameless rule). Regenerate:
+#   python3 scripts/gen-update-ks.py
+%include avalanche-update.ks
 
 # ── KWin effects (no-op — stock KDE defaults) ────────────────────────────────
 # Custom AvalancheDestroy C++ effect is in kwin/ — see DEVPLAN.md.

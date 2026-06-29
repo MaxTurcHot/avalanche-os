@@ -39,9 +39,10 @@ PlasmoidItem {
     // running dnf/pkexec — lets us tune the animation without real upgrades.
     property bool devStub: false
     property int  fakeCount: 23
-    // Shell-expanded by the plasma5support executable engine, so no PATH guessing.
-    // (Phase B / ISO: change to /usr/local/bin/avalanche-update-run.)
-    readonly property string helper: "$HOME/.local/bin/avalanche-update-run"
+    // Same QML works on the laptop (~/.local/bin) and the ISO (/usr/local/bin):
+    // we set PATH per-invocation (shell-expanded by the executable engine)
+    // instead of hardcoding a location.
+    readonly property string helperEnv: "PATH=\"$HOME/.local/bin:/usr/local/bin:$PATH\""
 
     // ── State ───────────────────────────────────────────────────────────────
     // "checking" | "idle" | "falling" | "done" | "empty"
@@ -168,7 +169,7 @@ PlasmoidItem {
             stubTimer.start()
         } else {
             poll.connectedSources = ["cat \"${XDG_RUNTIME_DIR:-/tmp}/avalanche-update.progress\" 2>/dev/null"]
-            exec.connectSource("setsid -f " + helper + " apply")
+            exec.connectSource("setsid -f env " + helperEnv + " avalanche-update-run apply")
         }
     }
 
@@ -196,7 +197,7 @@ PlasmoidItem {
             phase = "idle"
         } else {
             phase = "checking"
-            exec.connectSource(helper + " count")
+            exec.connectSource(helperEnv + " avalanche-update-run count")
         }
     }
 
