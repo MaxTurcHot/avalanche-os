@@ -57,6 +57,9 @@ dnf install -y \
   gstreamer1-plugin-libav \
   libdvdcss
 
+# ── Chromium (RPM Fusion freeworld build — proprietary codec support) ─────────
+dnf install -y chromium-freeworld
+
 # ── Steam (RPM Fusion non-free) ───────────────────────────────────────────────
 dnf install -y steam
 
@@ -74,6 +77,18 @@ dnf install -y code
 
 # ── DBeaver Community (direct RPM — their custom repo URL changed) ────────────
 dnf install -y https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm
+
+# ── Claude Code (Anthropic CLI, official dnf repo — stable channel) ───────────
+cat << 'EOF' > /etc/yum.repos.d/claude-code.repo
+[claude-code]
+name=Claude Code
+baseurl=https://downloads.claude.ai/claude-code/rpm/stable
+enabled=1
+gpgcheck=1
+gpgkey=https://downloads.claude.ai/keys/claude-code.asc
+EOF
+dnf install -y claude-code
+echo "AVALANCHE: Claude Code installed (stable channel)"
 
 # ── Firefox bookmarks (enterprise policies — applied on first launch) ──────────
 # Placement "toolbar" puts them on the bookmarks toolbar, visible by default.
