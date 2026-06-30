@@ -42,7 +42,7 @@
 #   python3 scripts/gen-terminal-ks.py
 %include avalanche-terminal.ks
 
-# ── Snow Watch Plasma widget (wheretosnow API) ────────────────────────────────
+# ── Snow Watch Plasma widget (Powder Seeker API) ──────────────────────────────
 %include avalanche-widget.ks
 
 # ── Snowfall updater (plasmoid + daily autostart + frameless rule). Regenerate:

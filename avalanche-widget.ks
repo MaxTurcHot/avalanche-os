@@ -1,5 +1,5 @@
 # avalanche-widget.ks — Snow Watch Plasma widget
-# Shows live powder conditions for user-configured resorts via wheretosnow API.
+# Shows live powder conditions for user-configured resorts via Powder Seeker API.
 # Widget ID: org.avalanche.snowwatch
 # Available in Add Widgets — not placed automatically.
 
@@ -16,7 +16,7 @@ cat > "${WIDGET_DIR}/metadata.json" << 'TXTEOF'
     "KPlugin": {
         "Authors": [{ "Name": "Maxime Turcotte" }],
         "Category": "Online Services",
-        "Description": "Live powder conditions for your watched resorts, powered by wheretosnow.",
+        "Description": "Live powder conditions for your watched resorts, powered by Powder Seeker.",
         "EnabledByDefault": false,
         "Id": "org.avalanche.snowwatch",
         "License": "GPL-2.0-or-later",
@@ -37,6 +37,9 @@ cat > "${WIDGET_DIR}/contents/config/main.xml" << 'TXTEOF'
                           http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
   <kcfgfile name=""/>
   <group name="General">
+    <entry name="serverUrl" type="String">
+      <default>https://turcserv.duckdns.org/powderseeker</default>
+    </entry>
     <entry name="watchedResorts" type="String">
       <default>massif-du-sud</default>
     </entry>
@@ -71,7 +74,8 @@ import org.kde.plasma.components as PlasmaComponents
 PlasmoidItem {
     id: root
 
-    readonly property string apiBase: "https://turcserv.duckdns.org/wheretosnow/api"
+    readonly property string serverUrl: Plasmoid.configuration.serverUrl
+    readonly property string apiBase: serverUrl + "/api"
     property var nameMap: ({})
     property string lastUpdated: ""
     property var lastRefreshTime: 0
@@ -218,7 +222,7 @@ PlasmoidItem {
                 MouseArea {
                     id: mouseArea; anchors.fill: parent; hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://turcserv.duckdns.org/wheretosnow/")
+                    onClicked: Qt.openUrlExternally(root.serverUrl + "/")
                 }
 
                 RowLayout {
@@ -253,7 +257,10 @@ ColumnLayout {
     id: configRoot
     spacing: 12
 
-    readonly property string apiBase: "https://turcserv.duckdns.org/wheretosnow/api"
+    // cfg_serverUrl auto-binds to the kcfg "serverUrl" entry; Plasma seeds the
+    // field text from the stored value and saves it back on Apply/OK.
+    property alias cfg_serverUrl: serverUrlField.text
+    readonly property string apiBase: serverUrlField.text + "/api"
     property var allResorts: []
     property var nameMap: ({})
     property var watchedIds: Plasmoid.configuration.watchedResorts
@@ -285,6 +292,15 @@ ColumnLayout {
     }
 
     Component.onCompleted: loadAllResorts()
+
+    Text { text: "Server"; color: "white"; font.bold: true; font.pixelSize: 13 }
+    QQC2.TextField {
+        id: serverUrlField; Layout.fillWidth: true; placeholderText: "https://host/app"; color: "white"
+        background: Rectangle { color: "#22ffffff"; radius: 4 }
+        onEditingFinished: configRoot.loadAllResorts()
+    }
+
+    Rectangle { height: 1; Layout.fillWidth: true; color: "#44ffffff" }
 
     Text { text: "Currently watching"; color: "white"; font.bold: true; font.pixelSize: 13 }
     Text {

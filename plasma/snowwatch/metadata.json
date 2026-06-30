@@ -3,7 +3,7 @@
     "KPlugin": {
         "Authors": [{ "Name": "Maxime Turcotte" }],
         "Category": "Online Services",
-        "Description": "Live powder conditions for your watched resorts, powered by wheretosnow.",
+        "Description": "Live powder conditions for your watched resorts, powered by Powder Seeker.",
         "EnabledByDefault": false,
         "Id": "org.avalanche.snowwatch",
         "License": "GPL-2.0-or-later",

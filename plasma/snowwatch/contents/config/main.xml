@@ -5,6 +5,9 @@
                           http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
   <kcfgfile name=""/>
   <group name="General">
+    <entry name="serverUrl" type="String">
+      <default>https://turcserv.duckdns.org/powderseeker</default>
+    </entry>
     <entry name="watchedResorts" type="String">
       <default>massif-du-sud</default>
     </entry>

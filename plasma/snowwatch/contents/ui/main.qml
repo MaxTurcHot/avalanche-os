@@ -7,7 +7,8 @@ import org.kde.plasma.components as PlasmaComponents
 PlasmoidItem {
     id: root
 
-    readonly property string apiBase: "https://turcserv.duckdns.org/wheretosnow/api"
+    readonly property string serverUrl: Plasmoid.configuration.serverUrl
+    readonly property string apiBase: serverUrl + "/api"
     property var nameMap: ({})
     property string lastUpdated: ""
     property var lastRefreshTime: 0
@@ -198,7 +199,7 @@ PlasmoidItem {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://turcserv.duckdns.org/wheretosnow/")
+                    onClicked: Qt.openUrlExternally(root.serverUrl + "/")
                 }
 
                 RowLayout {

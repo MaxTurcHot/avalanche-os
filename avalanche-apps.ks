@@ -99,8 +99,8 @@ cat > /etc/firefox/policies/policies.json << 'EOF'
   "policies": {
     "Bookmarks": [
       {
-        "Title": "Snow Conditions — Where to Snow",
-        "URL": "https://turcserv.duckdns.org/wheretosnow/",
+        "Title": "Snow Conditions — Powder Seeker",
+        "URL": "https://turcserv.duckdns.org/powderseeker/",
         "Placement": "toolbar"
       },
       {

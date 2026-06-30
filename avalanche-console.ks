@@ -6,7 +6,7 @@
 #   /usr/local/bin/avalanche-snow  — live snow conditions fetcher.
 #     Reads resort IDs from ~/.config/avalanche/resorts (user override) or
 #     /etc/avalanche/resorts (system default). Fetches PI data from the
-#     wheretosnow API; caches results 30 min so terminal opens stay fast.
+#     Powder Seeker API; caches results 30 min so terminal opens stay fast.
 #
 #   /etc/skel/.bashrc.d/avalanche-snow.sh  — hook that calls the snow report
 #     once per login session. Works for both login and non-login interactive
@@ -40,11 +40,11 @@ EOF
 # ── Avalanche preferences: system default resort list ─────────────────────────
 # /etc/avalanche/resorts is the system-wide resort list (one ID per line).
 # Users override with ~/.config/avalanche/resorts — same format.
-# IDs match the wheretosnow API (e.g. "massif-du-sud").
+# IDs match the Powder Seeker API (e.g. "massif-du-sud").
 mkdir -p /etc/avalanche
 cat > /etc/avalanche/resorts << 'EOF'
 # Avalanche OS — default resort watch list
-# One resort ID per line. IDs from https://turcserv.duckdns.org/wheretosnow/
+# One resort ID per line. IDs from https://turcserv.duckdns.org/powderseeker/
 # Users can override with ~/.config/avalanche/resorts
 massif-du-sud
 EOF
@@ -58,7 +58,9 @@ cat > /usr/local/bin/avalanche-snow << 'PYEOF'
 
 Reads resort IDs from ~/.config/avalanche/resorts (user) or
 /etc/avalanche/resorts (system default). Fetches PI data from the
-wheretosnow API and prints a brief table. Results cached for 30 min.
+Powder Seeker API and prints a brief table. Results cached for 30 min.
+
+The API base can be overridden with the AVALANCHE_API environment variable.
 """
 import json
 import os
@@ -66,7 +68,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-API = "https://turcserv.duckdns.org/wheretosnow/api"
+API = os.environ.get("AVALANCHE_API", "https://turcserv.duckdns.org/powderseeker/api")
 CACHE_TTL = 1800  # 30 minutes
 
 

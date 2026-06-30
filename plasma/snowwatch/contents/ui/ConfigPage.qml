@@ -8,7 +8,10 @@ ColumnLayout {
     id: configRoot
     spacing: Kirigami.Units.smallSpacing
 
-    readonly property string apiBase: "https://turcserv.duckdns.org/wheretosnow/api"
+    // cfg_serverUrl auto-binds to the kcfg "serverUrl" entry; Plasma seeds the
+    // field text from the stored value and saves it back on Apply/OK.
+    property alias cfg_serverUrl: serverUrlField.text
+    readonly property string apiBase: serverUrlField.text + "/api"
     property var allResorts: []
     property var nameMap: ({})
     property var watchedIds: []
@@ -59,6 +62,19 @@ ColumnLayout {
             return true
         })
     }
+
+    // ── Server ─────────────────────────────────────────────────────────────────
+    Kirigami.Heading { text: "Server"; level: 4 }
+
+    QQC2.TextField {
+        id: serverUrlField
+        Layout.fillWidth: true
+        placeholderText: "https://host/app"
+        // Reload the resort picker against the new URL without closing the dialog.
+        onEditingFinished: configRoot.loadAllResorts()
+    }
+
+    Kirigami.Separator { Layout.fillWidth: true }
 
     // ── Currently watching ───────────────────────────────────────────────────
     Kirigami.Heading { text: "Currently watching"; level: 4 }
